@@ -18,8 +18,8 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     travel_style = models.CharField(max_length=20, choices=TRAVEL_STYLE)
 
-    def __str__(self):
-        return f'{self.user.username} Profile'
+    def __str__(self):  # __unicode__ for Python 2
+        return self.user.username
 
 
 

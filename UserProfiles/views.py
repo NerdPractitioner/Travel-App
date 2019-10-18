@@ -3,29 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegisterForm, ProfileUpdateForm, UserUpdateForm
 from PIL import Image
-
-def register(request):
-    if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
-        profile_form = ProfileUpdateForm(request.POST)
-
-        if form.is_valid() and profile_form.is_valid():
-            user = form.save()
-
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            
-            profile.save()
-
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('profile')
-    else:
-        form = UserRegisterForm()
-        profile_form = ProfileUpdateForm()
-    
-    context = {'form' : form, 'profile_form' : profile_form}
-    return render(request, 'UserProfiles/register.html', context)
+from django.db import transaction
+from django.contrib.auth import login, authenticate
 
 
 
@@ -52,3 +31,32 @@ def profile(request):
     }
 
     return render(request, 'UserProfiles/profile.html', context)
+
+
+
+
+@transaction.atomic
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        profile_form = ProfileUpdateForm(request.POST)
+
+        if form.is_valid() and profile_form.is_valid():
+            user = form.save()
+            user.refresh_from_db()
+            profile_form =ProfileUpdateForm(request.POST, instance=user.profile)
+            profile_form.full_clean()
+            profile_form.save()
+
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('profile')
+    else:
+        form = UserRegisterForm()
+        profile_form = ProfileUpdateForm()
+    
+    context = {'form' : form, 'profile_form' : profile_form}
+    return render(request, 'UserProfiles/register.html', context)
+
+
+
