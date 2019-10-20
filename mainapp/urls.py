@@ -22,6 +22,7 @@ from django.urls import path, include
 from django.conf import settings
 from UserProfiles import views as user_views
 from . import views as mainapp_views
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', mainapp_views.home, name="home"),
@@ -34,7 +35,5 @@ urlpatterns = [
 
 ]
 
-"""
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    """

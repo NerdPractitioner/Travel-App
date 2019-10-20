@@ -13,7 +13,7 @@ class Profile(models.Model):
         ('WORK','Work'),
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    avatar = models.ImageField(default='default.jpg', upload_to='profile_pics/', null=True, blank=True)
     bio = models.CharField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     travel_style = models.CharField(max_length=20, choices=TRAVEL_STYLE)
