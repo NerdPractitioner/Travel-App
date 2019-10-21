@@ -139,3 +139,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 #LOGIN_REDIRECT_URL = 'profile'
 #LOGIN_URL = 'login'
+
+#code for Registration with Confirmation Mail
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
