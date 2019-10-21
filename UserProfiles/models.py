@@ -1,6 +1,8 @@
+import os
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.template.defaultfilters import slugify
+import datetime
 
 class Profile(models.Model):
     TRUE_FALSE_CHOICES = (
@@ -63,6 +65,9 @@ class Profile(models.Model):
     average_length = models.CharField(max_length=50, choices=TRIP_LENGTH, null=True, blank=True)
     average_cost = models.CharField(max_length=50, choices=AVERAGE_COST, null=True, blank=True)
 
+ 
+
+
 
     # signup_confirmation = models.BooleanField(default=False)
 
@@ -70,7 +75,15 @@ class Profile(models.Model):
         return self.user.username
 
 
+def get_image_filename(instance, filename):
+    
+    #id = instance.post.id
+    return os.path.join("gallery_pics/%s/" % instance.profile.user.username, filename) 
 
-
-
+class Images(models.Model):
+    profile = models.ForeignKey(Profile, related_name="photos", default=None, on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to=get_image_filename, blank=True, null=True)
+    
+    def __str__(self):
+        return self.image.url
     

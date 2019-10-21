@@ -1,14 +1,22 @@
 {% extends "base.html" %}
 
 {% block title %}Girls Love Travel{% endblock %}
-{% block header %}Girls Love Travel{% endblock %}
+
 
 {% block content %}
 
-
- <h2 class="account-heading">Welcome Home,{{ user.username }}!</h2>
-
-
+<div class="jumbotron">
+{% if user.is_authenticated %}
+ <h1 class="display-4">Welcome Home,{{ user.username }}!</h1>
+ <p class="lead">Head on over to your profile</p>
+ <a class="btn btn-primary btn-lg" href="{% url 'profile' %}" role="button">Sign Up</a>
+{% else %}
+<h1 class="display-4">Hey Girl! </h1>
+<p class="lead">Sign up if you're new here, or sign in below.</p>
+<a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Sign Up</a>
+<a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign In</a>
+{% endif %}
+</div>
 
 
 

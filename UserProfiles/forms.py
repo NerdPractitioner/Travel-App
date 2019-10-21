@@ -2,8 +2,8 @@
 from django import forms
 from django.contrib.auth.forms import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile
-
+from .models import Profile, Images
+from django.forms.models import modelformset_factory
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -38,6 +38,7 @@ class ProfileRegisterForm(forms.ModelForm):
         (True, 'Yes'),
         (False, 'No'),
     )
+    """
     TRAVEL_STYLE = (
         ('FOODIE','Foodie'),
         ('LUX','Lux'),
@@ -47,6 +48,7 @@ class ProfileRegisterForm(forms.ModelForm):
         ('FAMILY','Family'),
         ('WORK','Work'),
     )
+    """
     AGE_DEMOGRAPHIC = (
         ('UNDER 12','Under 12 years old'),
         ('12-17','12-17 years old'),
@@ -108,6 +110,13 @@ class PostRegUpdateForm(forms.ModelForm):
             'dom_travel',
             'average_length',
             'average_cost',
+            
             ]
 
-            
+         
+class ImageForm(forms.ModelForm):
+    image = forms.ImageField(label='Image')    
+    class Meta:
+        model = Images
+        fields = ('image', )
+
