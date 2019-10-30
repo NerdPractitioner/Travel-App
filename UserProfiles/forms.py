@@ -110,7 +110,8 @@ class PostRegUpdateForm(forms.ModelForm):
             'dom_travel',
             'average_length',
             'average_cost',
-            
+            'instagram_url',
+            'tiktok_url',
             ]
 
          
@@ -118,5 +119,5 @@ class ImageForm(forms.ModelForm):
     image = forms.ImageField(label='Image')    
     class Meta:
         model = Images
-        fields = ('image', )
+        fields = ('image',)
 

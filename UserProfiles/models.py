@@ -56,8 +56,13 @@ class Profile(models.Model):
     bio = models.CharField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     travel_style = models.CharField(max_length=20, choices=TRAVEL_STYLE, null=True, blank=True)
+
+    #Social Accounts
     glter = models.BooleanField(choices=TRUE_FALSE_CHOICES, null=True, blank=True)
-    facebook_url = models.CharField(max_length=150, null=True, blank=True)
+    facebook_url = models.URLField(max_length=150, null=True, blank=True)
+    instagram_url = models.URLField(max_length=150, null=True, blank=True)
+    tiktok_url = models.URLField(max_length=150, null=True, blank=True)
+
     home_airport = models.CharField(max_length=3, null=True, blank=True)
     age_bracket = models.CharField(max_length=50, choices=AGE_DEMOGRAPHIC, null=True, blank=True)
     int_travel = models.CharField(max_length=50, choices=TRAVEL_FREQUENCY, null=True, blank=True)
@@ -65,7 +70,9 @@ class Profile(models.Model):
     average_length = models.CharField(max_length=50, choices=TRIP_LENGTH, null=True, blank=True)
     average_cost = models.CharField(max_length=50, choices=AVERAGE_COST, null=True, blank=True)
 
- 
+    
+
+    
 
 
 

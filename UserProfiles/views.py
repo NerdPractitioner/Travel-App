@@ -1,5 +1,5 @@
 import os as os
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
@@ -8,11 +8,13 @@ from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.forms import modelformset_factory
 
-from .models import Images
+from .models import Images, Profile
 from .forms import UserRegisterForm, ProfileRegisterForm, UserUpdateForm, PostRegUpdateForm, ImageForm
 
 @login_required
 def profile(request):
+   
+
     ImageFormSet = modelformset_factory(Images, form=ImageForm)
 
     #UserFormSet = modelformset_factory(Profile, form=ImageForm, extr=6)
@@ -86,13 +88,102 @@ def register(request):
         }
     return render(request, 'UserProfiles/register.html', context)
 
-
+"""
 def index(request):
     path = settings.MEDIA_ROOT
     img_list = os.listdir(path + '/images')
     context = {'images' : img_list}
     return render(request, "photo/index.html", context)
-"""
+
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    fields = ['name', 'email', 'picture', 'job_title', 'location', 'personal_url',
+              'facebook_account', 'twitter_account', 'github_account',
+              'linkedin_account', 'short_bio', 'bio', ]
+    model = User
+
+    # send the user back to their own page after a successful update
+    def get_success_url(self):
+        return reverse('users:detail',
+                       kwargs={'username': self.request.user.username})
+
+    def get_object(self):
+        # Only get the User record for the user making the request
+        return User.objects.get(username=self.request.user.username)
+
+
+
+#VITOR METHOD
+
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
+from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+
+
+
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    model = User
+    # These next two lines tell the view to index lookups by username
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+
+class UserRedirectView(LoginRequiredMixin, RedirectView):
+    permanent = False
+
+    def get_redirect_url(self):
+        return reverse('users:detail',
+                       kwargs={'username': self.request.user.username})
+
+
+class UserUpdateView(LoginRequiredMixin, UpdateView):
+    fields = ['name', 'email', 'picture', 'job_title', 'location', 'personal_url',
+              'facebook_account', 'twitter_account', 'github_account',
+              'linkedin_account', 'short_bio', 'bio', ]
+    model = User
+
+    # send the user back to their own page after a successful update
+    def get_success_url(self):
+        return reverse('users:detail',
+                       kwargs={'username': self.request.user.username})
+
+    def get_object(self):
+        # Only get the User record for the user making the request
+        return User.objects.get(username=self.request.user.username)
+
+
+class UserListView(LoginRequiredMixin, ListView):
+    model = User
+    # These next two lines tell the view to index lookups by username
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @csrf_exempt
 def uploadImages(request):
     try:
@@ -111,4 +202,23 @@ def uploadImages(request):
     except KeyError:
         pass
     return redirect('/')
+
+
+@login_required
+def get_user_profile (request, user):
+    # If no such user exists raise 404
+    #other_user = username
+    # Flag that determines if we should show editable elements in template
+   # editable = False
+    # Handling non authenticated user for obvious reasons
+   # if request.user.is_authenticated() and request.user.username == user:
+    #    editable = True
+    if request.user.username == user:
+        profile = get_object_or_404(User, user=request.user)
+        return render(request, 'UserProfiles/profile.html', {'profile': profile})
+    else:
+        raise Http404
+    #return render (request, 'UserProfiles/profile.html', {'other_user':other_user})
+
+
 """
