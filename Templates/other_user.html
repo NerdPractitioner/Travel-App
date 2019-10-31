@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-3 col-sm-6">
+            <div class="cardheader">
+            <div class="avatar">
+
+            <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }}" alt="profile photo">
+            </div>
+
+            </div>
+            <div class="card-title h3">{{ user.username }}</div>
+            <div class="info">
+            
+            <div class="desc">{{ user.get_full_name }}</div>
+            <div class="desc">{{ user.profile.bio }}</div>
+            </div>
+            <div class="bottom">
+                <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <a class="btn btn-danger btn-sm" rel="publisher" href="https://plus.google.com/+ahmshahnuralam">
+                    <i class="fa fa-google-plus"></i>
+                </a>
+                <a class="btn btn-primary btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                    <i class="fa fa-behance"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -33,7 +33,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='UserProfiles/logout.html'), name='logout'),
     path('accounts/login/', auth_views.LoginView.as_view(template_name='UserProfiles/login.html')),
     path('results/', mainapp_views.SearchResultsView.as_view(template_name="user_search.html"), name="user_search"),
-
+    path('<str:username>', mainapp_views.get_user_profile, name="other_user"),
 ]
 
 if settings.DEBUG:

@@ -7,9 +7,12 @@ from PIL import Image
 from django.db import transaction
 from django.views.decorators.csrf import csrf_exempt
 from django.forms import modelformset_factory
-
+from django.urls import reverse
 from .models import Images, Profile
 from .forms import UserRegisterForm, ProfileRegisterForm, UserUpdateForm, PostRegUpdateForm, ImageForm
+
+
+
 
 @login_required
 def profile(request):
@@ -88,6 +91,17 @@ def register(request):
         }
     return render(request, 'UserProfiles/register.html', context)
 
+
+from django.contrib.auth.models import User
+
+"""
+@login_required
+class UserDetailView(DetailView):
+    u = 
+    model = User
+    slug_field = 'username'
+    slug_url_kwargs = 'username'
+"""
 """
 def index(request):
     path = settings.MEDIA_ROOT

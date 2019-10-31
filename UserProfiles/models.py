@@ -71,7 +71,8 @@ class Profile(models.Model):
     average_cost = models.CharField(max_length=50, choices=AVERAGE_COST, null=True, blank=True)
 
     
-
+    def get_absolute_url(self):
+        return reverse('profile', **kwargs={'pk':self.pk})
     
 
 

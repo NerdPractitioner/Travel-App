@@ -10,9 +10,11 @@
 
 <ul class="list-group list-group-flush">
   {% for i in object_list %}
+    <a href="{% url 'other_user' i.username  %}">
     <li class="list-group-item">
       {{ i.username }} {{ i.profile.bio }}
     </li>
+    </a>
    <!-- <a href="{% url 'profile'%}" >Visit</a>-->
     
   {% endfor %}

@@ -6,6 +6,7 @@ from UserProfiles.models import Profile
 from django.contrib.auth.forms import User
 # from django.contrib.auth.models import User
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 
 def home(request):
@@ -24,3 +25,7 @@ class SearchResultsView(ListView):
         )
         return object_list
 
+def get_user_profile(request, username):
+    user = User.objects.get(username=username)
+    #user = get_object_or_404(User, username=self.kwargs.get('username'))
+    return render(request,'other_user.html',{"user":user})
