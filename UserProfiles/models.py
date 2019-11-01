@@ -52,7 +52,7 @@ class Profile(models.Model):
 
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    avatar = models.ImageField(default='default.jpg', upload_to='profile_pics/', null=True, blank=True)
+    avatar = models.ImageField(default='default1.jpg', upload_to='profile_pics/', null=True, blank=True)
     bio = models.CharField(max_length=500, blank=True)
     location = models.CharField(max_length=30, blank=True)
     travel_style = models.CharField(max_length=20, choices=TRAVEL_STYLE, null=True, blank=True)
@@ -71,8 +71,7 @@ class Profile(models.Model):
     average_cost = models.CharField(max_length=50, choices=AVERAGE_COST, null=True, blank=True)
 
     
-    def get_absolute_url(self):
-        return reverse('profile', **kwargs={'pk':self.pk})
+
     
 
 

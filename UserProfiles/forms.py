@@ -4,6 +4,9 @@ from django.contrib.auth.forms import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile, Images
 from django.forms.models import modelformset_factory
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Row
+
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -38,17 +41,7 @@ class ProfileRegisterForm(forms.ModelForm):
         (True, 'Yes'),
         (False, 'No'),
     )
-    """
-    TRAVEL_STYLE = (
-        ('FOODIE','Foodie'),
-        ('LUX','Lux'),
-        ('BUDGET','Budget'),
-        ('SOLO','Solo'),
-        ('HOTEL','Hotel'),
-        ('FAMILY','Family'),
-        ('WORK','Work'),
-    )
-    """
+
     AGE_DEMOGRAPHIC = (
         ('UNDER 12','Under 12 years old'),
         ('12-17','12-17 years old'),
@@ -116,8 +109,17 @@ class PostRegUpdateForm(forms.ModelForm):
 
          
 class ImageForm(forms.ModelForm):
-    image = forms.ImageField(label='Image')    
+    image = forms.ImageField(label='Image') 
+
     class Meta:
         model = Images
         fields = ('image',)
 
+        def __init__(self, *args, **kwargs): 
+            super().__init__(*args, **kwargs)
+            self.helper = FormHelper()
+            self.helper.layout = Layout(
+                Row(
+                    Column('image', css_class='form-group col-md-6 mb-0'),
+                    css_class='form-row'
+                ),)
