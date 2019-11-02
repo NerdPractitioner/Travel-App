@@ -35,6 +35,8 @@ urlpatterns = [
     path('results/', mainapp_views.SearchResultsView.as_view(template_name="user_search.html"), name="user_search"),
     path('<str:username>', mainapp_views.get_user_profile, name="other_user"),
     path('accounts/', include('django.contrib.auth.urls')),
+    # include chat urls
+    path('chat/', include('chat.urls')),
 ]
 
 if settings.DEBUG:

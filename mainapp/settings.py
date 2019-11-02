@@ -31,14 +31,20 @@ ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 # Application definition
 
 INSTALLED_APPS = [
+    # My Apps
     'crispy_forms',
     'UserProfiles.apps.UserprofilesConfig',
+    'chat',
+    'channels',
+    # Default Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+
     
     
 
@@ -74,7 +80,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mainapp.wsgi.application'
-
+# ASGI setup for channels (chat)
+ASGI_APPLICATION = "mainapp.routing.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1',6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -128,11 +143,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "assets"),
 )
 
-
+#Routing media files for local dev
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-
+# Bootstrap Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
@@ -142,3 +157,4 @@ LOGIN_REDIRECT_URL = 'home'
 
 #code for Registration with Confirmation Mail
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
