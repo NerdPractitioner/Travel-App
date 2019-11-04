@@ -5,19 +5,35 @@
 
 
 {% block content %}
-<div class="card" style="width:30rem">
+<div class="card" style="width:50rem">
 <h1 class="card-header" >Search Results</h1>
 
 <ul class="list-group list-group-flush">
   {% for i in object_list %}
-    <a href="{% url 'other_user' i.username  %}">
-    <li class="list-group-item">
-      {{ i.username }} {{ i.profile.bio }}
-    </li>
-    </a>
+
+  <li class="list-group-item">
+    <div class="media">
+      {% if i.profile.avatar %}
+      <img class="rounded-circle account-img" src="{{ i.profile.avatar.url }}" alt="profile photo">
+      {% else %}
+      <img class="rounded-circle account-img" src="default1.jpg" alt="No personalized profile image set">
+      {% endif %}
+      <div class="media-body">
+      <h5 class="mt-0">
+      <a href="{% url 'other_user' i.username  %}">
+      {{ i.username }}
+      </a></h5>
+      {{ i.profile.bio }}
+      </div>
+    </div>
+  </li>
+
+
    <!-- <a href="{% url 'profile'%}" >Visit</a>-->
-    
+
   {% endfor %}
 </ul>
 
 {% endblock %}
+
+

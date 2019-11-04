@@ -2,10 +2,19 @@
 
 
 {% block content %}
+<style>
+    .btn{
+    border-radius: 50%;
+    width:32px;
+    height:32px;
+    line-height:18px;
+    }
 
 
-    <div class="row">
-        <div class="col-lg-3 col-sm-6">
+</style>
+
+
+
             <div class="cardheader">
             <div class="avatar">
 
@@ -15,26 +24,61 @@
             </div>
             <div class="card-title h3">{{ user.username }}</div>
             <div class="info">
-            
-            <div class="desc">{{ user.get_full_name }}</div>
-            <div class="desc">{{ user.profile.bio }}</div>
+
+    <div class="desc">{{ user.get_full_name }}</div>
+
+                <div class="desc"><strong>BIO:</strong> {{ user.profile.bio }}</div>
+            <div class="desc"><strong>Location:</strong>{{ user.profile.location }}</div>
+
+                <img src="static/images/backpack.png" style="height: auto; width:2em;">
+               <!-- <span class="badge badge-success">{{ user.profile.travel_style }}</span>
+
+-->
+                {% if user.profile.glter %}
+            <div class="desc">GLTer for Life!</div>
+                {% endif %}
+
+
+
+
+
+
+
+
+
+
             </div>
+
+
+
             <div class="bottom">
-                <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
-                    <i class="fa fa-twitter"></i>
+
+                <a class="btn btn-danger btn-sm" rel="publisher" href="{{user.profile.instagram_url}}" alt="instagram">
+                    <i class="fa fa-instagram"></i>
                 </a>
-                <a class="btn btn-danger btn-sm" rel="publisher" href="https://plus.google.com/+ahmshahnuralam">
-                    <i class="fa fa-google-plus"></i>
-                </a>
-                <a class="btn btn-primary btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                <a class="btn btn-primary btn-sm" rel="publisher" href="{{user.profile.facebook_url}}" alt="facebook">
                     <i class="fa fa-facebook"></i>
                 </a>
-                <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
-                    <i class="fa fa-behance"></i>
-                </a>
+
+
+
             </div>
-        </div>
-    </div>
+
+
+
+
+
+            <h2>Gallery</h2>
+        <div class="row">
+              {% for image in user.profile.photos.all %}
+                <div class='col-md-3'>
+                    <img src="{{ image }}" alt="Image not found" class="image-thumbnail" style="height:10em; width:10em; padding:.2em">
+                </div>
+              {% endfor %}
+            </div>
+
+
+
 
 
 
