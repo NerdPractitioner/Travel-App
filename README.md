@@ -1,6 +1,5 @@
 # Travel-App
-# Web-Scraper Live Group Project
-Django web-scraper using Beautiful Soup and Selenium packages to pull launch schedule from NASA site post JS loading
+
 ## Contents
 * [Introduction](#introduction)
 * [In Progress](#in-progress)
