@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'u#(w03#k!5t&gfs)+t_i^6rxq@fe5x7^t%a%im9wunagjwz5@s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com', '167.99.171.207' ]
 
@@ -94,10 +94,22 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+if DEBUG:
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+else:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'travelapp',
+        'USER': 'matthew',
+        'PASSWORD': 'Artist-14',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
@@ -145,6 +157,7 @@ STATICFILES_DIRS = (
 
 #Routing media files for local dev
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_URL = '/media/'
 
 # Bootstrap Crispy Forms
