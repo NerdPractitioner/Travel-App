@@ -25,7 +25,7 @@ SECRET_KEY = 'u#(w03#k!5t&gfs)+t_i^6rxq@fe5x7^t%a%im9wunagjwz5@s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com', '167.99.171.207' ]
+ALLOWED_HOSTS = [ '64.225.29.104' ]
 
 
 # Application definition
@@ -86,7 +86,7 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1',6379)],
+            "hosts": [('64.225.29.104',6379)],
         },
     },
 }
@@ -106,8 +106,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'travelapp',
-        'USER': 'matthew',
-        'PASSWORD': 'Artist-14',
+        'USER': 'mattmin',
+        'PASSWORD': 'kettleMan-14',
         'HOST': 'localhost',
         'PORT': '',
         }
