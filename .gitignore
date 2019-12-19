@@ -66,3 +66,10 @@ node_modules/
 
 venv_bootcamp/
 staticfiles
+
+
+env/
+frontend/node_modules
+frontend/node_modules
+frontend/.cache
+frontend/dist
