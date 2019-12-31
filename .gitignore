@@ -63,6 +63,7 @@ media/
 node_modules/
 
 .env
+.gltenv
 
 venv_bootcamp/
 staticfiles
