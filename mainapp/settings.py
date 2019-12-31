@@ -25,7 +25,8 @@ SECRET_KEY = 'u#(w03#k!5t&gfs)+t_i^6rxq@fe5x7^t%a%im9wunagjwz5@s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [ '64.225.29.104','127.0.0.1' ]
+ALLOWED_HOSTS = [ '127.0.0.1', '64.225.29.104' ]
+
 
 
 # Application definition
@@ -94,24 +95,23 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-#if DEBUG:
- #   DATABASES = {
-  #      'default': {
-   #         'ENGINE': 'django.db.backends.sqlite3',
-    #        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-     #   }
-#    }
-#else:
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'travelapp',
-        'USER': 'mattmin',
-        'PASSWORD': 'kettleMan-14',
-        'HOST': 'localhost',
-        'PORT': '',
+  'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         }
     }
+
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#        'NAME': 'travelapp',
+#        'USER': 'mattmin',
+#        'PASSWORD': 'kettleMan-14',
+#        'HOST': 'localhost',
+#        'PORT': '',
+#        }
+#    }
 
 
 # Password validation
