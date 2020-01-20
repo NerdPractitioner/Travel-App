@@ -71,6 +71,8 @@ staticfiles
 
 env/
 frontend/node_modules
-frontend/node_modules
+front-end/node_modules
+node_modules
 frontend/.cache
 frontend/dist
+local_settings.py
