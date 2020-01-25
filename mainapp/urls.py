@@ -32,11 +32,16 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='UserProfiles/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='UserProfiles/logout.html'), name='logout'),
     #path('accounts/login/', auth_views.LoginView.as_view(template_name='UserProfiles/login.html')),
-    path('results/', mainapp_views.SearchResultsView.as_view(template_name="user_search.html"), name="user_search"),
-    path('<str:username>', mainapp_views.get_user_profile, name="other_user"),
+    path('results/', mainapp_views.SearchResultsView.as_view(), name="user_search"),
+    path('profile/<str:username>', mainapp_views.get_user_profile, name="other_user"),
+
     path('accounts/', include('django.contrib.auth.urls')),
     # include chat urls
+    path('api-auth/', include('rest_framework.urls')),
+    # path('rest-auth/', include('rest_auth.urls')),
+    # path('rest-auth/registration/', include('rest_auth.registration.urls')),
     path('chat/', include('chat.urls')),
+    # path('api/chat/', include('chat.api.urls', namespace='chat')),
 ]
 
 if settings.DEBUG:

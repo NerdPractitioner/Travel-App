@@ -17,6 +17,9 @@ class WebSocketService {
 
   connect(chatUrl) {
     const path = `${SOCKET_URL}/ws/chat/${chatUrl}/`;
+    // console.log(`new WebSocket(${path})`);
+    // Use https://github.com/joewalnes/reconnecting-websocket/ ?
+  
     this.socketRef = new WebSocket(path);
     this.socketRef.onopen = () => {
       console.log("WebSocket open");
@@ -29,7 +32,7 @@ class WebSocketService {
     };
     this.socketRef.onclose = () => {
       console.log("WebSocket closed let's reopen");
-      this.connect();
+      this.connect(chatUrl);
     };
   }
 

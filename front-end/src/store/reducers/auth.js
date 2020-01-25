@@ -2,6 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../utility";
 
 const initialState = {
+  id: null,
   token: null,
   username: null,
   error: null,
@@ -17,6 +18,7 @@ const authStart = (state, action) => {
 
 const authSuccess = (state, action) => {
   return updateObject(state, {
+    id: action.id,
     token: action.token,
     username: action.username,
     error: null,
@@ -40,6 +42,17 @@ const authLogout = (state, action) => {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case '@@INIT':
+      if(window.__INITIAL_STATE__ && window.__INITIAL_STATE__['auth']){
+        return {
+          'id': window.__INITIAL_STATE__['auth']['id'],
+          'token': window.__INITIAL_STATE__['auth']['token'],
+          'username': window.__INITIAL_STATE__['auth']['username'],
+          ...state
+        };
+      } else {
+        return state;
+      }
     case actionTypes.AUTH_START:
       return authStart(state, action);
     case actionTypes.AUTH_SUCCESS:

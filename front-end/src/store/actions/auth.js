@@ -8,11 +8,12 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (username, token) => {
+export const authSuccess = (username, token, userId) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     token: token,
-    username: username
+    username: username,
+    id: userId,
   };
 };
 
@@ -24,9 +25,9 @@ export const authFail = error => {
 };
 
 export const logout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("username");
-  localStorage.removeItem("expirationDate");
+  // localStorage.removeItem("token");
+  // localStorage.removeItem("username");
+  // localStorage.removeItem("expirationDate");
   return {
     type: actionTypes.AUTH_LOGOUT
   };
@@ -42,6 +43,7 @@ export const checkAuthTimeout = expirationTime => {
 
 export const authLogin = (username, password) => {
   return dispatch => {
+    return;
     dispatch(authStart());
     axios
       .post(`${HOST_URL}/rest-auth/login/`, {
@@ -90,22 +92,37 @@ export const authSignup = (username, email, password1, password2) => {
 
 export const authCheckState = () => {
   return dispatch => {
-    const token = localStorage.getItem("token");
-    const username = localStorage.getItem("username");
-    if (token === undefined) {
-      dispatch(logout());
+    // const token = window.AUTH_TOKEN;
+    // console.log(
+    //   window.__INITIAL_STATE__['auth']['username']
+    // )
+
+    if(window.__INITIAL_STATE__['auth']['token']){
+      dispatch(authSuccess(
+        window.__INITIAL_STATE__['auth']['username'],
+        window.__INITIAL_STATE__['auth']['token'],
+        window.__INITIAL_STATE__['auth']['id'],
+      ));
     } else {
-      const expirationDate = new Date(localStorage.getItem("expirationDate"));
-      if (expirationDate <= new Date()) {
-        dispatch(logout());
-      } else {
-        dispatch(authSuccess(username, token));
-        dispatch(
-          checkAuthTimeout(
-            (expirationDate.getTime() - new Date().getTime()) / 1000
-          )
-        );
-      }
+      dispatch(logout());
     }
+
+    // const token = localStorage.getItem("token");
+    // const username = localStorage.getItem("username");
+    // if (token === undefined) {
+    //   dispatch(logout());
+    // } else {
+    //   const expirationDate = new Date(localStorage.getItem("expirationDate"));
+    //   if (expirationDate <= new Date()) {
+    //     dispatch(logout());
+    //   } else {
+    //     dispatch(authSuccess(username, token));
+    //     dispatch(
+    //       checkAuthTimeout(
+    //         (expirationDate.getTime() - new Date().getTime()) / 1000
+    //       )
+    //     );
+    //   }
+    // }
   };
 };

@@ -32,11 +32,6 @@ ALLOWED_HOSTS = [ '127.0.0.1', '64.225.29.104' ]
 # Application definition
 
 INSTALLED_APPS = [
-    # My Apps
-    'crispy_forms',
-    'UserProfiles.apps.UserprofilesConfig',
-    'chat',
-    'channels',
     # Default Apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,14 +39,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 'django.contrib.sites',
 
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    'corsheaders',
 
-    
-    
+    # 'rest_auth',
+    # 'rest_auth.registration',
+    'rest_framework',
+    'rest_framework.authtoken',
+
+    'crispy_forms',
+    'channels',
+    'sorl.thumbnail',
+    'webpack_loader',
+
+    # My Apps
+    'chat',
+    'UserProfiles.apps.UserprofilesConfig',
 
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -116,22 +128,12 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    # {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator', },
+    # {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator', },
+    # {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator', },
+    # {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator', }
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
@@ -160,10 +162,39 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 
+SITE_ID = 1
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+CORS_ORIGIN_WHITELIST = ('localhost:3000', '127.0.0.1:3000')
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'username'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+CSRF_COOKIE_NAME = "csrftoken"
+
 # Bootstrap Crispy Forms
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'webpack_bundles/', # must end with slash
+        'STATS_FILE': os.path.join(BASE_DIR, 'front-end', 'build', 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        # 'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+        'IGNORE': [r'.+\.map'],
+        'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
+    }
+}
 
 LOGIN_REDIRECT_URL = 'home'
 #LOGIN_URL = 'login'

@@ -13,6 +13,7 @@ import "./assets/style.css";
 
 class App extends React.Component {
   componentDidMount() {
+    // this.props.login(e.target.username.value, e.target.password.value);
     this.props.onTryAutoSignup();
   }
 
@@ -25,15 +26,16 @@ class App extends React.Component {
   }
 
   render() {
+
     return (
       <Router>
         <div id="frame">
-          <Sidepanel />
+          {/* <Sidepanel /> */}
           <div className="content">
-            <AddChatModal
+            {/* <AddChatModal
               isVisible={this.props.showAddChatPopup}
               close={() => this.props.closeAddChatPopup()}
-            />
+            /> */}
             <Profile />
             <BaseRouter />
           </div>

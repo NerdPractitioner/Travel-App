@@ -71,7 +71,8 @@ body {
     -ms-filter: "FlipH";
   }
   #frame #sidepanel #profile .wrap {
-    height: 250px;
+    /* height: 250px; */
+    height: 61px;
     line-height: 65px;
     overflow: scroll;
     -moz-transition: 0.3s height ease;
@@ -499,8 +500,13 @@ body {
     height: 100%;
     overflow: hidden;
     position: relative;
+
+    /* Full width without sidebar: */
+    width: 100%;
   }
-  @media screen and (max-width: 735px) {
+  
+  /* With SideBar */
+  /* @media screen and (max-width: 735px) {
     #frame .content {
       width: calc(100% - 100px);
       min-width: 300px !important;
@@ -510,7 +516,8 @@ body {
     #frame .content {
       width: calc(100% - 340px);
     }
-  }
+  } */
+
   #frame .content .contact-profile {
     width: 100%;
     height: 80px;
@@ -606,7 +613,8 @@ body {
   }
   #frame .content .message-input {
     position: absolute;
-    bottom: 0;
+    /* bottom: 0; */
+    bottom: -5px;
     width: 100%;
     z-index: 99;
   }

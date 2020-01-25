@@ -32,7 +32,7 @@ export const getUserChats = (username, token) => {
       Authorization: `Token ${token}`
     };
     axios
-      .get(`${HOST_URL}/chat/?username=${username}`)
+      .get(`${HOST_URL}/api/chat/?username=${username}`)
       .then(res => dispatch(getUserChatsSuccess(res.data)));
   };
 };

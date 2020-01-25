@@ -8,16 +8,17 @@ class Chat extends React.Component {
 
   initialiseChat() {
     this.waitForSocketConnection(() => {
-      WebSocketInstance.fetchMessages(
-        this.props.username,
-        this.props.match.params.chatID
-      );
+      // WebSocketInstance.fetchMessages(
+      //   this.props.username,
+      //   this.props.match.params.chatID
+      // );
     });
     WebSocketInstance.connect(this.props.match.params.chatID);
   }
 
   constructor(props) {
     super(props);
+    console.log(props)
     this.initialiseChat();
   }
 
@@ -74,15 +75,18 @@ class Chat extends React.Component {
   };
 
   renderMessages = messages => {
-    const currentUser = this.props.username;
+    const currentUserID = this.props.currentUserID;
+
     return messages.map((message, i, arr) => (
       <li
         key={message.id}
-        style={{ marginBottom: arr.length - 1 === i ? "300px" : "15px" }}
-        className={message.author === currentUser ? "sent" : "replies"}
+        // style={{ marginBottom: arr.length - 1 === i ? "300px" : "15px" }}
+        style={{ marginBottom: arr.length - 1 === i ? "100px" : "15px" }}
+        className={message.author.id === currentUserID ? "sent" : "replies"}
       >
         <img
-          src="http://emilcarlsson.se/assets/mikeross.png"
+          // src="http://emilcarlsson.se/assets/mikeross.png"
+          src={message.author.avatar}
           alt="profile-pic"
         />
         <p>
@@ -99,6 +103,13 @@ class Chat extends React.Component {
   };
 
   componentDidMount() {
+    // this.props.getUserChats(
+    //   this.props.username,
+    //   this.props.token
+    // );
+    console.log(
+      'Chat.props', this.props
+    )
     this.scrollToBottom();
   }
 
@@ -110,12 +121,12 @@ class Chat extends React.Component {
     if (this.props.match.params.chatID !== newProps.match.params.chatID) {
       WebSocketInstance.disconnect();
       this.waitForSocketConnection(() => {
-        WebSocketInstance.fetchMessages(
-          this.props.username,
-          newProps.match.params.chatID
-        );
+        // WebSocketInstance.fetchMessages(
+        //   this.props.username,
+        //   newProps.match.params.chatID
+        // );
       });
-      WebSocketInstance.connect(newProps.match.params.chatID);
+      // WebSocketInstance.connect(newProps.match.params.chatID);
     }
   }
 
@@ -144,7 +155,7 @@ class Chat extends React.Component {
                 type="text"
                 placeholder="Write your message..."
               />
-              <i className="fa fa-paperclip attachment" aria-hidden="true" />
+              {/* <i className="fa fa-paperclip attachment" aria-hidden="true" /> */}
               <button id="chat-message-submit" className="submit">
                 <i className="fa fa-paper-plane" aria-hidden="true" />
               </button>
@@ -157,9 +168,14 @@ class Chat extends React.Component {
 }
 
 const mapStateToProps = state => {
+  console.log('Chat mapStateToProps:', state);
+
   return {
+    token: state.auth.token,
+    currentUserID: state.auth.id,
     username: state.auth.username,
-    messages: state.message.messages
+
+    messages: state.message.messages,
   };
 };
 

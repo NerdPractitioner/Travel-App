@@ -17,7 +17,7 @@
         <li>{{ user.email }}</li>
         <li>{{user.profile.bio}}</li>
         <li>{{user.profile.location}}</li>
-     
+      </ul>
 
 
 
@@ -26,6 +26,15 @@
   <!-- FORM HERE -->
   <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
+      <fieldset class="form-group">
+          <legend class="border-bottom mb-4">Contacts</legend>
+          <ul>
+              {% for user in contacts %}
+{#                  <li>{{ user }}</li>#}
+                  <li><a href="{% url 'start_react_one_to_one_chat' user.id %}" target="_blank">{{ user }}</a></li>
+              {% endfor %}
+          </ul>
+      </fieldset>
       <fieldset class="form-group">
           <legend class="border-bottom mb-4">Profile Info</legend>
           {{ u_form|crispy }}

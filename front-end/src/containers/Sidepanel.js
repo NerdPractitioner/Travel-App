@@ -33,7 +33,7 @@ class Sidepanel extends React.Component {
   }
 
   componentDidMount() {
-    this.waitForAuthDetails();
+    // this.waitForAuthDetails();
   }
 
   openAddChatPopup() {
@@ -63,7 +63,8 @@ class Sidepanel extends React.Component {
       return (
         <Contact
           key={c.id}
-          name="Harvey Specter"
+          // name="Harvey Specter"
+          name={c.title}
           picURL="http://emilcarlsson.se/assets/louislitt.png"
           status="busy"
           chatURL={`/${c.id}`}
@@ -101,7 +102,7 @@ class Sidepanel extends React.Component {
                 </li>
               </ul>
             </div>
-            <div id="expanded">
+            {false && <div id="expanded">
               {this.props.loading ? (
                 <Spin indicator={antIcon} />
               ) : this.props.isAuthenticated ? (
@@ -152,17 +153,26 @@ class Sidepanel extends React.Component {
                 </div>
               )}
             </div>
+            }
           </div>
         </div>
+
+        <div id="search"></div>
+        {false &&
         <div id="search">
           <label htmlFor="">
             <i className="fa fa-search" aria-hidden="true" />
           </label>
           <input type="text" placeholder="Search Chats..." />
         </div>
+        }
+
         <div id="contacts">
           <ul>{activeChats}</ul>
         </div>
+
+        <div id="bottom-bar"></div>
+        {false &&
         <div id="bottom-bar">
           <button id="addChat" onClick={() => this.openAddChatPopup()}>
             <i className="fa fa-user-plus fa-fw" aria-hidden="true" />
@@ -173,6 +183,7 @@ class Sidepanel extends React.Component {
             <span>Settings</span>
           </button>
         </div>
+        }
       </div>
     );
   }

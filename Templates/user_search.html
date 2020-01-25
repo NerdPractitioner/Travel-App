@@ -1,5 +1,5 @@
 <!-- templates/search_results.html -->
-{% extends "base.html" %}
+{% extends "base.html" %}{% load photo_tags %}
 
 {% block title %}Search Results{% endblock %}
 
@@ -26,6 +26,27 @@
       {{ i.profile.bio }}
       </div>
     </div>
+
+    {% if request.user.id != i.id %}
+
+        <button id="add-to-contacts-{{ i.id }}"
+                data-id="{{ i.id }}"
+                data-url="{% url 'add_contact' i.id %}"
+                class="btn btn-light float-right btn-ajax-post"
+                {% if i|is_user_in_contacts:request.user %}style="display: none"{% endif %}
+                type="button">
+                Add To Contacts
+        </button>
+
+        <button id="remove-from-contacts-{{ i.id }}"
+                data-id="{{ i.id }}"
+                data-url="{% url 'remove_contact' i.id %}"
+                class="btn btn-danger float-right btn-ajax-post"
+                {% if not i|is_user_in_contacts:request.user %}style="display: none"{% endif %}
+                type="button">
+                Remove From Contacts
+        </button>
+    {% endif %}
   </li>
 
 
@@ -34,6 +55,27 @@
   {% endfor %}
 </ul>
 
+</div>
 {% endblock %}
 
+{% block footer_js %}
+    <script>
+    $(document).ready(function() {
+        $('.btn-ajax-post').on('click', function (e) {
+            var id = $(e.target).data()['id'];
+            var url = $(e.target).data()['url'];
 
+            $.post(url, function( data ) {
+                $(e.target).hide();
+                if($(e.target).attr('id').startsWith('add-to-contacts')){
+                    $('#remove-from-contacts-'+id).show();
+                } else {
+                    $('#add-to-contacts-'+id).show();
+                }
+            }).fail(function() {
+                alert( "error" );
+            });
+        });
+    });
+    </script>
+{% endblock %}

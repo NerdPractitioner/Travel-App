@@ -53,11 +53,18 @@ def profile(request):
         p_form = ProfileRegisterForm(instance=request.user.profile)
         k_form = PostRegUpdateForm(instance=request.user.profile)
         formset = ImageFormSet(queryset=Images.objects.none())
+
+    contacts = []
+    f = request.user.friends.first()
+    if f:
+        contacts = [f.user for f in f.friends.all()]
+
     context = {
         'u_form': u_form,
         'p_form': p_form,
         'k_form': k_form,
         'formset': formset,
+        'contacts': contacts
     }
 
     return render(request, 'UserProfiles/profile.html', context)

@@ -31,6 +31,13 @@ module.exports = function(proxy, allowedHost) {
     // really know what you're doing with a special environment variable.
     disableHostCheck:
       !proxy || process.env.DANGEROUSLY_DISABLE_HOST_CHECK === 'true',
+    open: false,
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+      "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
+    },
+    // public: 'localhost:3000',
     // Enable gzip compression of generated files.
     compress: true,
     // Silence WebpackDevServer's own logs since they're generally not useful.
