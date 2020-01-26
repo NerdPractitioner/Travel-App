@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import TimeAgo from 'react-timeago';
 import WebSocketInstance from "../websocket";
 import Hoc from "../hoc/hoc";
 
@@ -51,32 +52,8 @@ class Chat extends React.Component {
     this.setState({ message: "" });
   };
 
-  renderTimestamp = timestamp => {
-    let prefix = "";
-    const timeDiff = Math.round(
-      (new Date().getTime() - new Date(timestamp).getTime()) / 60000
-    );
-    if (timeDiff < 1) {
-      // less than one minute ago
-      prefix = "just now...";
-    } else if (timeDiff < 60 && timeDiff > 1) {
-      // less than sixty minutes ago
-      prefix = `${timeDiff} minutes ago`;
-    } else if (timeDiff < 24 * 60 && timeDiff > 60) {
-      // less than 24 hours ago
-      prefix = `${Math.round(timeDiff / 60)} hours ago`;
-    } else if (timeDiff < 31 * 24 * 60 && timeDiff > 24 * 60) {
-      // less than 7 days ago
-      prefix = `${Math.round(timeDiff / (60 * 24))} days ago`;
-    } else {
-      prefix = `${new Date(timestamp)}`;
-    }
-    return prefix;
-  };
-
-  renderMessages = messages => {
+  renderMessages = (currentChat, messages) => {
     const currentUserID = this.props.currentUserID;
-
     return messages.map((message, i, arr) => (
       <li
         key={message.id}
@@ -90,9 +67,16 @@ class Chat extends React.Component {
           alt="profile-pic"
         />
         <p>
+          <Hoc>
+          {currentChat.is_group &&
+            <span className="username">{message.author.username}</span>
+          }
+          </Hoc>
           {message.content}
           <br />
-          <small>{this.renderTimestamp(message.timestamp)}</small>
+          <small>
+            <TimeAgo date={message.timestamp} />
+          </small>
         </p>
       </li>
     ));
@@ -135,7 +119,7 @@ class Chat extends React.Component {
       <Hoc>
         <div className="messages">
           <ul id="chat-log">
-            {this.props.messages && this.renderMessages(this.props.messages)}
+            {this.props.messages && this.renderMessages(this.props.currentChat, this.props.messages)}
             <div
               style={{ float: "left", clear: "both" }}
               ref={el => {
@@ -170,11 +154,19 @@ class Chat extends React.Component {
 const mapStateToProps = state => {
   console.log('Chat mapStateToProps:', state);
 
+  let currentChat = null;
+  (state.message.chats || []).map(chat => {
+    if(chat.id == window.CURRENT_CHAT_ID){
+      currentChat = chat;
+    }
+  });
+
   return {
     token: state.auth.token,
     currentUserID: state.auth.id,
     username: state.auth.username,
 
+    currentChat: currentChat,
     messages: state.message.messages,
   };
 };

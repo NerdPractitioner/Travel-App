@@ -25,19 +25,17 @@ const setChats = (state, action) => {
 };
 
 const reducer = (state = initialState, action) => {
+  if(action.type == '@@INIT-APP') {
+    // console.log('!', window.__INITIAL_STATE__['chats']);
+    let new_s = updateObject(state, {
+      chats: window.__INITIAL_STATE__['chats'],
+      messages: window.__INITIAL_STATE__['messages'],
+    });
+    console.log(new_s);
+    return new_s;
+  }
+
   switch (action.type) {
-    case '@@INIT':
-      console.log('@@INIT', window.__INITIAL_STATE__['chats']);
-      if(window.__INITIAL_STATE__ && window.__INITIAL_STATE__['chats']){
-        let new_s = updateObject(state, {
-          chats: window.__INITIAL_STATE__['chats'],
-          messages: window.__INITIAL_STATE__['messages'],
-        });
-        console.log(new_s);
-        return new_s;
-      } else {
-        return state;
-      }
     case actionTypes.ADD_MESSAGE:
       return addMessage(state, action);
     case actionTypes.SET_MESSAGES:

@@ -35,20 +35,29 @@ def start_one_to_one_chat(request, user_id):
         chat_obj.participants.add(contact_one)
         chat_obj.participants.add(contact_two)
         chat_obj.save()
-    return redirect('react_one_to_one_chat', chat_obj.id)
+    return redirect('react_chat', chat_obj.id)
 
 
 @login_required
-def react_one_to_one_chat(request, chat_id):
+def react_chat(request, chat_id):
     token, created = Token.objects.get_or_create(user=request.user)
     # the_contact = Contact.objects.filter(
     #     # chats__participants__chats__=
     # )
-    chat_obj = get_object_or_404(Chat, id=chat_id)
-    if not chat_obj.participants.filter(user=request.user).exists():
-        return HttpResponseForbidden()
+    user_contact, created = Contact.objects.get_or_create(user=request.user)
 
-    target_contact = chat_obj.participants.all().exclude(user=request.user).get()
+    title = 'Chat'
+    if isinstance(chat_id, int) or chat_id.isdigit():
+        chat_obj = get_object_or_404(Chat, id=chat_id, is_group=False)
+        if not chat_obj.participants.filter(user=request.user).exists():
+            return HttpResponseForbidden()
+        target_contact = chat_obj.participants.all().exclude(user=request.user).get()
+        title = target_contact.user.username
+    else:
+        chat_obj = get_object_or_404(Chat, slug=chat_id, is_group=True)
+        title = chat_obj.slug
+        if not chat_obj.participants.all().filter(user=request.user).exists():
+            chat_obj.participants.add(user_contact)
 
     chat_messages = []
 
@@ -62,8 +71,8 @@ def react_one_to_one_chat(request, chat_id):
                 # 'avatar': msg.contact.user.profile.avatar.url
                 'avatar': img.url
             },
-            # 'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%M'),
-            'timestamp': str(msg.timestamp),
+            'timestamp': msg.timestamp.strftime('%Y-%m-%d %H:%MZ'),
+            # 'timestamp': str(msg.timestamp),
             'content': msg.content
         })
 
@@ -81,7 +90,7 @@ def react_one_to_one_chat(request, chat_id):
     }
 
     return render(request, 'chat/react_chat.html', {
-        'title': target_contact.user.username,
+        'title': title,
         'initial_state': json.dumps(initial_state, ensure_ascii=False),
         'random_hash': str(uuid.uuid4()),
         'chat_obj': chat_obj,
@@ -111,8 +120,19 @@ def remove_contact(request, user_id):
     return HttpResponse('Removed')
 
 
+@login_required
 def index(request):
-    return render(request, 'chat/index.html', {})
+    rooms_objects = Chat.objects.filter(is_group=True)
+    rooms = []
+    for room in rooms_objects:
+        participants = room.participants.count()
+        rooms.append({
+            'slug': room.slug,
+            'participants_count': participants
+        })
+    return render(request, 'chat/index.html', {
+        'rooms': rooms
+    })
 
 
 @login_required

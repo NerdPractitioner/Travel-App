@@ -26,7 +26,7 @@ class Message(models.Model):
 
 
 class Chat(models.Model):
-    title = models.TextField(blank=True)
+    title = models.TextField(editable=False, blank=True)
     slug = models.CharField(blank=True, max_length=64)
     is_group = models.BooleanField(default=False)
 
@@ -36,5 +36,8 @@ class Chat(models.Model):
 
     def __str__(self):
         # return "#{}".format(self.pk)
-        participants = ','.join([p.user.username for p in self.participants.all()])
-        return '#%s participants: %s' % (self.pk, participants)
+        participants = ', '.join([p.user.username for p in self.participants.all()])
+        if not self.is_group:
+            return '#%s participants: %s' % (self.pk, participants)
+        else:
+            return '#%s group %r with participants: %s' % (self.pk, self.slug, participants)

@@ -10,15 +10,18 @@ class Profile extends React.Component {
     // this.props.match.params.chatID
 
     let targetUser = null;
+    let currentChat = null;
+
     (this.props.chats || []).map(chat => {
       if(chat.id == window.CURRENT_CHAT_ID){
+        currentChat = chat;
         chat.participants.map(p => {
           if(p.id != this.props.currentUserID){
             targetUser = p;
           }
         })
       }
-    })
+    });
 
     console.log('this.props.currentUserID', this.props.currentUserID);
     console.log('targetUser', targetUser);
@@ -27,10 +30,21 @@ class Profile extends React.Component {
       // return <Redirect to="/" />;
       return <div>Missing auth token</div>;
     }
-    if(targetUser === null){
+    if(targetUser === null || !currentChat){
       return <div></div>;
     }
 
+    if(currentChat && currentChat.is_group) {
+      return (
+        <div className="contact-profile">
+            <img src="/media/group_default_1.png" alt="" />
+            <Hoc>
+              <p><strong>{currentChat.slug}:&nbsp;</strong>{currentChat.participants.map(p => p.username).join(', ')}</p>
+            </Hoc>
+        </div>
+      );
+    }
+    
     return (
       <div className="contact-profile">
         {targetUser.username !== null ? (

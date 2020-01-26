@@ -41,18 +41,15 @@ const authLogout = (state, action) => {
 };
 
 const reducer = (state = initialState, action) => {
+  if(action.type == '@@INIT-APP') {
+      return {
+        'id': window.__INITIAL_STATE__['auth']['id'],
+        'token': window.__INITIAL_STATE__['auth']['token'],
+        'username': window.__INITIAL_STATE__['auth']['username'],
+      };
+  }
+
   switch (action.type) {
-    case '@@INIT':
-      if(window.__INITIAL_STATE__ && window.__INITIAL_STATE__['auth']){
-        return {
-          'id': window.__INITIAL_STATE__['auth']['id'],
-          'token': window.__INITIAL_STATE__['auth']['token'],
-          'username': window.__INITIAL_STATE__['auth']['username'],
-          ...state
-        };
-      } else {
-        return state;
-      }
     case actionTypes.AUTH_START:
       return authStart(state, action);
     case actionTypes.AUTH_SUCCESS:

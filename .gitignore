@@ -59,7 +59,10 @@ docs/_build/
 
 .DS_Store
 *.sqlite3
-media/
+/media/*
+!/media/default1.jpg
+!/media/group_default.png
+!/media/group_default_1.png
 node_modules/
 
 .env

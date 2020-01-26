@@ -27,13 +27,17 @@ class ChatSerializer(serializers.ModelSerializer):
     # participants = ContactSerializer(many=True)
     participants_names = ContactUserNamesSerializer(source='participants', many=True)
     participants = serializers.SerializerMethodField()
-    title = serializers.SerializerMethodField()
+    # title = serializers.SerializerMethodField()
 
     class Meta:
         model = Chat
-        fields = ('id',
-                  # 'messages',
-                  'participants', 'participants_names', 'title')
+        fields = (
+            'id',
+            # 'messages',
+            'participants', 'participants_names',
+            # 'title',
+            'slug', 'is_group'
+        )
         read_only = ('id', 'title')
 
     def get_participants(self, instance):

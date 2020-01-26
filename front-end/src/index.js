@@ -23,6 +23,8 @@ function configureStore() {
     composeEnhancers(applyMiddleware(thunk))
   );
 
+  store.dispatch({ type: '@@INIT-APP' });
+
   //   if (module.hot) {
   //     module.hot.accept("./store/reducers", () => {
   //       const nextRootReducer = require("./store/reducers/auth");

@@ -26,8 +26,12 @@ class ChatConsumer(WebsocketConsumer):
         # user_contact = get_user_contact(data['from'])
         current_user = self.scope['user']
 
+        if data['chatId'].isdigit():
+            current_chat = Chat.objects.get(id=data['chatId'])
+        else:
+            current_chat = Chat.objects.get(slug=data['chatId'], is_group=True)
+
         # current_chat = get_current_chat(data['chatId'])
-        current_chat = Chat.objects.get(id=data['chatId'])
         contact_author = current_chat.participants.all().filter(user=current_user).get()
         # if not current_chat.participants.all().filter(user=user_contact).exists():
         #     raise Exception('403')
@@ -57,7 +61,7 @@ class ChatConsumer(WebsocketConsumer):
             'author': serialize_author(message.author.user),
             'content': message.content,
             # 'avatar': img.url,
-            'timestamp': str(message.timestamp)
+            'timestamp': message.timestamp.strftime('%Y-%m-%d %H:%MZ')
         }
 
     commands = {
@@ -67,9 +71,19 @@ class ChatConsumer(WebsocketConsumer):
 
     def connect(self):
         assert self.scope['user'].is_authenticated
+        current_user = self.scope['user']
 
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         print('WS connected %r listen room %r' % (self.scope['user'].username, self.room_name))
+
+        try:
+            if self.room_name.isdigit():
+                current_chat = Chat.objects.get(id=self.room_name)
+            else:
+                current_chat = Chat.objects.get(slug=self.room_name, is_group=True)
+            contact_author = current_chat.participants.all().filter(user=current_user).get()
+        except Exception as e:
+            print(e)
 
         self.room_group_name = 'chat_%s' % self.room_name
         async_to_sync(self.channel_layer.group_add)(
