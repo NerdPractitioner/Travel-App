@@ -1,4 +1,4 @@
-let DEBUG = true;
+let DEBUG = false;
 let HOST_URL = "http://64.225.29.104";
 let SOCKET_URL = "ws://64.225.29.104";
 
