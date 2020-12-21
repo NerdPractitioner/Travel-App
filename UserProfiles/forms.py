@@ -54,7 +54,7 @@ class ProfileRegisterForm(forms.ModelForm):
         ('OVER 75','75 years or older'),
     )
 
-    glter = forms.ChoiceField(choices=TRUE_FALSE_CHOICES, label='Are you a part of the Girls love travel Facebook group?')
+    nerd = forms.ChoiceField(choices=TRUE_FALSE_CHOICES, label='Are you a part of the Nerd Practitioner Discord Channel?')
     facebook_url = forms.CharField(max_length=150, label='Facebook URL (if applicable)')
     home_airport = forms.CharField(max_length=3,label='What is the three letter code for your home airport?')
     age_bracket = forms.ChoiceField(choices=AGE_DEMOGRAPHIC, label='What is your age bracket?')

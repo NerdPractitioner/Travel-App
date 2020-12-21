@@ -58,7 +58,7 @@ class Profile(models.Model):
     travel_style = models.CharField(max_length=20, choices=TRAVEL_STYLE, null=True, blank=True)
 
     #Social Accounts
-    glter = models.BooleanField(choices=TRUE_FALSE_CHOICES, null=True, blank=True)
+    nerd = models.BooleanField(choices=TRUE_FALSE_CHOICES, null=True, blank=True)
     facebook_url = models.URLField(max_length=150, null=True, blank=True)
     instagram_url = models.URLField(max_length=150, null=True, blank=True)
     tiktok_url = models.URLField(max_length=150, null=True, blank=True)
