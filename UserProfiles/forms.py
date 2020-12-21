@@ -64,7 +64,7 @@ class ProfileRegisterForm(forms.ModelForm):
             'bio', 
             'location', 
             'travel_style', 
-            'glter',
+            'nerd',
             'facebook_url',
             'home_airport',
             'age_bracket',
